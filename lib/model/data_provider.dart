@@ -1,7 +1,7 @@
 import 'package:workshop1_bloc/model/hospital.dart';
 
 class DataProvider {
-  var hospitals = [];
+  var hospitals = <Hospital>[];
 
   DataProvider() {
     hospitals.add(Hospital(

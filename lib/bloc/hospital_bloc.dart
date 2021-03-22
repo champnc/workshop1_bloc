@@ -13,6 +13,10 @@ class HospitalBloc extends Bloc<HospitalEvent, HospitalState> {
   Stream<HospitalState> mapEventToState(
     HospitalEvent event,
   ) async* {
-    
+    if (event is ClosestHospital) {
+      yield HospitalInitial();
+    } else if (event is FurthestHospital) {
+      yield HospitalInitial();
+    }
   }
 }

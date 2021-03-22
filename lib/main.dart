@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as Math;
 
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:workshop1_bloc/bloc/hospital_bloc.dart';
+import 'package:workshop1_bloc/model/data_provider.dart';
+import 'package:workshop1_bloc/model/hospital.dart';
+import 'package:workshop1_bloc/model/my_location.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -11,9 +17,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: kPrimaryColor,
+        primaryColor: Color.fromRGBO(95, 75, 187, 1),
       ),
-      home: MyHomePage('Workshop 1 with BLOC'),
+      home: BlocProvider(
+          create: (context) => HospitalBloc(),
+          child: MyHomePage('Workshop 1 with BLOC')),
     );
   }
 }
@@ -21,8 +29,20 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatelessWidget {
   MyHomePage(this.title);
   final String title;
+  final _MyLocation = MyLocation(13.723884, 100.529435);
+  List<Hospital> _AllHospitals = DataProvider().hospitals;
+
   @override
   Widget build(BuildContext context) {
+
+    _AllHospitals.forEach((element) {
+      element.distance = calcDistance(_MyLocation.latitude,
+          _MyLocation.longitude, element.latitude, element.longitude);
+    });
+    _AllHospitals.sort((a, b) => a.distance.compareTo(b.distance));
+    var closest = _AllHospitals.first;
+    var furthest = _AllHospitals.last;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
@@ -32,10 +52,141 @@ class MyHomePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'You have pushed the button this many times:',
+              'Current Location',
+              style: TextStyle(
+                  color: Color.fromRGBO(95, 75, 187, 1),
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold),
             ),
+            SizedBox(
+              height: 50,
+            ),
+            Text(
+              'Latitude : ' + _MyLocation.latitude.toString(),
+              style: TextStyle(color: Color.fromRGBO(95, 75, 187, 1)),
+            ),
+            SizedBox(
+              height: 25,
+            ),
+            Text(
+              'Longitude : ' + _MyLocation.longitude.toString(),
+              style: TextStyle(color: Color.fromRGBO(95, 75, 187, 1)),
+            ),
+            SizedBox(
+              height: 50,
+            ),
+            MaterialButton(
+              color: Color.fromRGBO(95, 75, 187, 1),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ClosestHospitalRoute(closest)),
+                );
+              },
+              child: Text(
+                "Closest Hospital",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+            MaterialButton(
+              color: Color.fromRGBO(95, 75, 187, 1),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => FurthestHospitalRoute(furthest)),
+                );
+              },
+              child: Text(
+                "Furtest Hospital",
+                style: TextStyle(color: Colors.white),
+              ),
+            )
           ],
         ),
+      ),
+    );
+  }
+}
+
+class ClosestHospitalRoute extends StatelessWidget {
+  final Hospital closest;
+  ClosestHospitalRoute(this.closest);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("home"),
+      ),
+      body: Column(
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.all(5),
+            color: Color.fromRGBO(95, 75, 187, 1),
+            child: Center(child: Text(closest.name)),
+          ),
+          Container(
+            padding: EdgeInsets.all(5),
+            child: Row(
+              children: <Widget>[Container(), Container()],
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.all(5),
+            child: Row(
+              children: <Widget>[Container(), Container()],
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.all(5),
+            child: Row(
+              children: <Widget>[Container(), Container()],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class FurthestHospitalRoute extends StatelessWidget {
+  final Hospital furthest;
+  FurthestHospitalRoute(this.furthest);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("home"),
+      ),
+      body: Column(
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.all(5),
+            color: Color.fromRGBO(95, 75, 187, 1),
+            child: Center(child: Text(furthest.name,Tes)),
+          ),
+          Container(
+            padding: EdgeInsets.all(5),
+            child: Row(
+              children: <Widget>[Container(), Container()],
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.all(5),
+            child: Row(
+              children: <Widget>[Container(), Container()],
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.all(5),
+            child: Row(
+              children: <Widget>[Container(), Container()],
+            ),
+          ),
+        ],
       ),
     );
   }
