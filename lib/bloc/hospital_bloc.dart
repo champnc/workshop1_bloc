@@ -13,6 +13,6 @@ class HospitalBloc extends Bloc<HospitalEvent, HospitalState> {
   Stream<HospitalState> mapEventToState(
     HospitalEvent event,
   ) async* {
-    // TODO: implement mapEventToState
+    
   }
 }
