@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as Math;
+import 'package:intl/intl.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workshop1_bloc/bloc/hospital_bloc.dart';
@@ -34,7 +35,6 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     _AllHospitals.forEach((element) {
       element.distance = calcDistance(_MyLocation.latitude,
           _MyLocation.longitude, element.latitude, element.longitude);
@@ -77,6 +77,7 @@ class MyHomePage extends StatelessWidget {
             ),
             MaterialButton(
               color: Color.fromRGBO(95, 75, 187, 1),
+              minWidth: 200,
               onPressed: () {
                 Navigator.push(
                   context,
@@ -91,6 +92,7 @@ class MyHomePage extends StatelessWidget {
             ),
             MaterialButton(
               color: Color.fromRGBO(95, 75, 187, 1),
+              minWidth: 200,
               onPressed: () {
                 Navigator.push(
                   context,
@@ -118,33 +120,82 @@ class ClosestHospitalRoute extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("home"),
+        title: Text("Home"),
+        elevation: 0,
       ),
       body: Column(
         children: <Widget>[
           Container(
+            height: 50,
             padding: EdgeInsets.all(5),
             color: Color.fromRGBO(95, 75, 187, 1),
-            child: Center(child: Text(closest.name)),
-          ),
-          Container(
-            padding: EdgeInsets.all(5),
-            child: Row(
-              children: <Widget>[Container(), Container()],
+            child: Center(
+              child: Text(closest.name,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16)),
             ),
           ),
           Container(
+            height: 50,
             padding: EdgeInsets.all(5),
             child: Row(
-              children: <Widget>[Container(), Container()],
+              children: <Widget>[
+                Padding(
+                    padding: EdgeInsets.all(8),
+                    child: Image.asset("asset/images/resources_marker.png")),
+                Flexible(
+                    child: Padding(
+                  padding: const EdgeInsets.only(left: 8),
+                  child: Text(
+                    closest.address,
+                    style: TextStyle(color: Color.fromRGBO(95, 75, 187, 1)),
+                  ),
+                ))
+              ],
             ),
           ),
           Container(
+            height: 50,
             padding: EdgeInsets.all(5),
             child: Row(
-              children: <Widget>[Container(), Container()],
+              children: <Widget>[
+                Padding(
+                    padding: EdgeInsets.all(8),
+                    child: Image.asset("asset/images/resources_phone.png")),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    closest.tel,
+                    style: TextStyle(color: Color.fromRGBO(95, 75, 187, 1)),
+                  ),
+                )
+              ],
             ),
           ),
+          Container(
+            height: 50,
+            padding: EdgeInsets.all(5),
+            child: Row(
+              children: <Widget>[
+                Padding(
+                    padding: EdgeInsets.all(8),
+                    child: Image.asset("asset/images/resources_road.png")),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    closest.distance.toStringAsFixed(0) + " m.",
+                    style: TextStyle(color: Color.fromRGBO(95, 75, 187, 1)),
+                  ),
+                )
+              ],
+            ),
+          ),
+          Expanded(
+              child: Container(
+            color: Color.fromRGBO(95, 75, 187, 1),
+          )),
         ],
       ),
     );
@@ -159,33 +210,83 @@ class FurthestHospitalRoute extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("home"),
+        title: Text("Home"),
+        elevation: 0,
+        bottomOpacity: 0,
       ),
       body: Column(
         children: <Widget>[
           Container(
+            height: 50,
             padding: EdgeInsets.all(5),
             color: Color.fromRGBO(95, 75, 187, 1),
-            child: Center(child: Text(furthest.name,Tes)),
-          ),
-          Container(
-            padding: EdgeInsets.all(5),
-            child: Row(
-              children: <Widget>[Container(), Container()],
+            child: Center(
+              child: Text(furthest.name,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16)),
             ),
           ),
           Container(
+            height: 50,
             padding: EdgeInsets.all(5),
             child: Row(
-              children: <Widget>[Container(), Container()],
+              children: <Widget>[
+                Padding(
+                    padding: EdgeInsets.all(8),
+                    child: Image.asset("asset/images/resources_marker.png")),
+                Flexible(
+                    child: Padding(
+                  padding: const EdgeInsets.only(left: 8),
+                  child: Text(
+                    furthest.address,
+                    style: TextStyle(color: Color.fromRGBO(95, 75, 187, 1)),
+                  ),
+                )),
+              ],
             ),
           ),
           Container(
+            height: 50,
             padding: EdgeInsets.all(5),
             child: Row(
-              children: <Widget>[Container(), Container()],
+              children: <Widget>[
+                Padding(
+                    padding: EdgeInsets.all(8),
+                    child: Image.asset("asset/images/resources_phone.png")),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    furthest.tel,
+                    style: TextStyle(color: Color.fromRGBO(95, 75, 187, 1)),
+                  ),
+                )
+              ],
             ),
           ),
+          Container(
+            height: 50,
+            padding: EdgeInsets.all(5),
+            child: Row(
+              children: <Widget>[
+                Padding(
+                    padding: EdgeInsets.all(8),
+                    child: Image.asset("asset/images/resources_road.png")),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    furthest.distance.toStringAsFixed(0) + " m.",
+                    style: TextStyle(color: Color.fromRGBO(95, 75, 187, 1)),
+                  ),
+                )
+              ],
+            ),
+          ),
+          Expanded(
+              child: Container(
+            color: Color.fromRGBO(95, 75, 187, 1),
+          )),
         ],
       ),
     );
